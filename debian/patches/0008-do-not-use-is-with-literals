@@ -1,0 +1,87 @@
+From: Stephen Sinclair <radarsat1@gmail.com>
+Date: Thu, 2 Jul 2020 22:01:48 +0000
+Subject: Do not use is with literals
+
+Fixes a SyntaxWarning introduced in Python 3.8.
+---
+ keras/backend/numpy_backend.py      | 2 +-
+ keras/backend/tensorflow_backend.py | 4 ++--
+ keras/backend/theano_backend.py     | 4 ++--
+ keras/losses.py                     | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/keras/backend/numpy_backend.py b/keras/backend/numpy_backend.py
+index e334a7b..42fe6d8 100644
+--- a/keras/backend/numpy_backend.py
++++ b/keras/backend/numpy_backend.py
+@@ -249,7 +249,7 @@ def in_train_phase(x, alt, training=None):
+     if training is None:
+         training = learning_phase()
+ 
+-    if training is 1 or training is True:
++    if training == 1 or training is True:
+         if callable(x):
+             return x()
+         else:
+diff --git a/keras/backend/tensorflow_backend.py b/keras/backend/tensorflow_backend.py
+index 5df41eb..99564c3 100644
+--- a/keras/backend/tensorflow_backend.py
++++ b/keras/backend/tensorflow_backend.py
+@@ -3198,13 +3198,13 @@ def in_train_phase(x, alt, training=None):
+     else:
+         uses_learning_phase = False
+ 
+-    if training is 1 or training is True:
++    if training == 1 or training is True:
+         if callable(x):
+             return x()
+         else:
+             return x
+ 
+-    elif training is 0 or training is False:
++    elif training == 0 or training is False:
+         if callable(alt):
+             return alt()
+         else:
+diff --git a/keras/backend/theano_backend.py b/keras/backend/theano_backend.py
+index 837ebe9..f271694 100644
+--- a/keras/backend/theano_backend.py
++++ b/keras/backend/theano_backend.py
+@@ -1731,13 +1731,13 @@ def in_train_phase(x, alt, training=None):
+     else:
+         uses_learning_phase = False
+ 
+-    if training is 1 or training is True:
++    if training == 1 or training is True:
+         if callable(x):
+             return x()
+         else:
+             return x
+ 
+-    elif training is 0 or training is False:
++    elif training == 0 or training is False:
+         if callable(alt):
+             return alt()
+         else:
+diff --git a/keras/losses.py b/keras/losses.py
+index 11eeb04..e537c8d 100644
+--- a/keras/losses.py
++++ b/keras/losses.py
+@@ -680,7 +680,7 @@ def categorical_crossentropy(y_true, y_pred, from_logits=False, label_smoothing=
+     y_pred = K.constant(y_pred) if not K.is_tensor(y_pred) else y_pred
+     y_true = K.cast(y_true, y_pred.dtype)
+ 
+-    if label_smoothing is not 0:
++    if label_smoothing != 0:
+         smoothing = K.cast_to_floatx(label_smoothing)
+ 
+         def _smooth_labels():
+@@ -699,7 +699,7 @@ def sparse_categorical_crossentropy(y_true, y_pred, from_logits=False, axis=-1):
+ def binary_crossentropy(y_true, y_pred, from_logits=False, label_smoothing=0):
+     y_pred = K.constant(y_pred) if not K.is_tensor(y_pred) else y_pred
+     y_true = K.cast(y_true, y_pred.dtype)
+-    if label_smoothing is not 0:
++    if label_smoothing != 0:
+         smoothing = K.cast_to_floatx(label_smoothing)
+         y_true = K.switch(K.greater(smoothing, 0),
+                           lambda: y_true * (1.0 - smoothing) + 0.5 * smoothing,

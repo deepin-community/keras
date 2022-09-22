@@ -1,0 +1,16 @@
+Description: Selu test tolerance
+ Increase tolerance for activations_test.py.
+ .
+ diff --git a/tests/keras/activations_test.py b/tests/keras/activations_test.py
+ index 4c0bb36..c4cbe4f 100644
+--- a/tests/keras/activations_test.py
++++ b/tests/keras/activations_test.py
+@@ -223,7 +223,7 @@ def test_selu():
+     result = f([negative_values])[0]
+     true_result = (np.exp(negative_values) - 1) * scale * alpha
+ 
+-    assert_allclose(result, true_result)
++    assert_allclose(result, true_result, rtol=1e-05)
+ 
+ 
+ def test_tanh():

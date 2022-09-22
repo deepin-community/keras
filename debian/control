@@ -1,0 +1,58 @@
+Source: keras
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Stephen Sinclair <radarsat1@gmail.com>
+Section: science
+Priority: optional
+Build-Depends: debhelper-compat (= 12),
+               dh-python,
+               python3-all,
+               python3-setuptools,
+               python3-six,
+               python3-yaml,
+               python3-numpy,
+               python3-scipy,
+               python3-theano,
+               python3-h5py,
+               python3-pytest,
+               python3-pandas,
+               python3-pil,
+               python3-nose,
+               python3-pydot,
+               python3-distutils,
+               python3-flaky,
+               python3-keras-applications (>= 1.0.8),
+               python3-keras-preprocessing (>= 1.1.0),
+               markdown,
+               links
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/science-team/keras
+Vcs-Git: https://salsa.debian.org/science-team/keras.git
+Homepage: https://keras.io/
+X-Python3-Version: >= 3.8
+
+Package: python3-keras
+Architecture: all
+Section: python
+Depends: python3-numpy,
+         python3-scipy,
+         python3-h5py,
+         python3-theano,
+         ${misc:Depends},
+         ${python3:Depends}
+Description: deep learning framework running on Theano or TensorFlow
+ Keras is a Python library for machine learning based on deep (multi-
+ layered) artificial neural networks (DNN), which follows a minimalistic
+ and modular design with a focus on fast experimentation.
+ .
+ Features of DNNs like neural layers, cost functions, optimizers,
+ initialization schemes, activation functions and regularization schemes
+ are available in Keras a standalone modules which can be plugged together
+ as wanted to create sequence models or more complex architectures.
+ Keras supports convolutions neural networks (CNN, used for image
+ recognition resp. classification) and recurrent neural networks (RNN,
+ suitable for sequence analysis like in natural language processing).
+ .
+ It runs as an abstraction layer on the top of Theano (math expression
+ compiler) by default, which makes it possible to accelerate the computations
+ by using (GP)GPU devices. Alternatively, Keras could run on Google's
+ TensorFlow (not yet available in Debian).

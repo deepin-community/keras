@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+# Tests must use Theano backend with CPU device
+export KERAS_BACKEND=theano
+export THEANO_FLAGS='device=cpu,cxx=,base_compiledir=/tmp'
+
+# python3.Y at build time, python3 at CI time
+PYINTERPRETER=${PYINTERPRETER:-python3}
+
+# Python module successfully imported
+${PYINTERPRETER} -c 'import keras'
+
+# Execute a simple Keras script.
+${PYINTERPRETER} -c 'import keras, numpy
+x,y=numpy.array([[0,0],[0,1],[1,0],[1,1]]),numpy.array([0,1,1,0])
+inputs = keras.layers.Input(shape=(2,))
+a = keras.layers.Dense(3, activation="relu")(inputs)
+outputs = keras.layers.Dense(1)(a)
+model = keras.Model(inputs=inputs, outputs=outputs)
+model.compile(loss="mean_squared_error", optimizer="sgd", metrics=["accuracy"])
+model.fit(x, y, verbose=0, epochs=1000)
+loss, accuracy = model.evaluate(x, y, verbose=1)
+print("Test fraction correct (Accuracy) = {:.2f}".format(accuracy))'

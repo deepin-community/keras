@@ -1,0 +1,20 @@
+From: Stephen Sinclair <radarsat1@gmail.com>
+Date: Tue, 7 Nov 2017 11:59:15 -0300
+Subject: Make docs browsable by setting use_directory_urls=false.
+
+---
+ docs/mkdocs.yml | 1 +
+ 1 file changed, 1 insertion(+)
+
+Index: keras/docs/mkdocs.yml
+===================================================================
+--- keras.orig/docs/mkdocs.yml
++++ keras/docs/mkdocs.yml
+@@ -19,6 +19,7 @@ docs_dir: sources
+ repo_url: http://github.com/keras-team/keras
+ site_url: http://keras.io/
+ site_description: 'Documentation for Keras, the Python Deep Learning library.'
++use_directory_urls: false
+ 
+ dev_addr: '0.0.0.0:8000'
+ google_analytics: ['UA-61785484-1', 'keras.io']

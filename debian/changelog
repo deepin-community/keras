@@ -1,0 +1,178 @@
+keras (2.3.1+dfsg-3) unstable; urgency=medium
+
+  * debian/patches:
+    + Fix use of is with literals. (Closes: #958038)
+
+ -- Stephen Sinclair <radarsat1@gmail.com>  Thu, 02 Jul 2020 22:03:37 +0000
+
+keras (2.3.1+dfsg-2) unstable; urgency=medium
+
+  * debian/patches:
+    + fix test regression for python3-h5py 2.10.0-8.
+      (Closes: #963426)
+
+ -- Stephen Sinclair <radarsat1@gmail.com>  Wed, 24 Jun 2020 06:38:25 +0000
+
+keras (2.3.1+dfsg-1) unstable; urgency=medium
+
+  [ Stephen Sinclair ]
+  * New upstream version 2.3.1.
+  * debian/watch:
+    + add dversionmangle for +dfsg suffix.
+  * debian/control:
+    + update standards to 4.5.0 (no changes).
+    + add build-dep on python3-flaky.
+    + remove package keras-doc.
+    + update required python version to 3.8.
+    + update required keras-preprocessing to 1.1.0
+    + update required keras-applications to 1.0.8
+  * debian/patches:
+    + refresh patches for new version.
+    + add a tolerance for an activations test. (Closes: #952163)
+  * debian/rules:
+    + ignore two tests requiring unpackaged dependencies.
+
+  [ Anton Gladky ]
+  * [8c694c3] Remove d/keras-doc* files
+  * [2664dc6] Apply cme fix dpkg
+  * [09ca50c] Use secure URI in Homepage field.
+  * [d388ac9] Bump debhelper from old 11 to 12.
+  * [49333c1] Set upstream metadata fields: Bug-Database, Bug-Submit, Repository, Repository-Browse.
+
+ -- Stephen Sinclair <radarsat1@gmail.com>  Fri, 20 Mar 2020 16:02:33 +0000
+
+keras (2.2.4-1) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Stephen Sinclair ]
+  * New upstream version 2.2.4.
+  * debian/control:
+    + update standards to 4.3.0.
+    + add BD for new keras-related packages,
+      namely keras-preprocessing, keras-applications.
+    + remove promise of TensorFlow packaging.
+  * debian/rules:
+    + update tests to ignore.
+    + fix cwd for running tests.
+    + use find for removing unwanted files.
+    + support DEB_BUILD_OPTIONS=nodoc.
+    + remove bundled files and depend on libjs-jquery for docs.
+    + remove bundled filed and depend on libjs-mustache for docs.
+    + remove bundled files and depend on fonts-font-awesome for docs.
+    + enable DH_VERBOSE=1.
+    + add LANG=C.UTF-8 for links.
+    + remove a commented DEB_BUILD_OPTIONS.
+  * debian/tests:
+    + add autopkgtest for default config without specifying backend.
+  * debian/patches:
+    + rebase patches.
+    + ensure "docs" is not discovered as a module to install by setuptools.
+    + Change default backend to theano (Closes: #896295).
+  * debian/copyright:
+    + add all *.pyc and __pycache__ files to Files-Excluded.
+    + update year to 2019.
+  * debian/gitlab-ci.yml:
+    + add support for salsa gitlab CI.
+  * debian/clean:
+    + add docs/sources, docs/html, docs/.pybuild and .pybuild.
+  * Specify keras-applications and keras-preprocessing versions.
+  * Do not call dh with mkdocs when nodoc.
+
+  [ Dmitry Shachnev ]
+  * Use dh_mkdocs instead of unbundling static files manually.
+
+ -- Daniel Stender <stender@debian.org>  Thu, 17 Jan 2019 23:44:17 +0100
+
+keras (2.1.5-2) unstable; urgency=medium
+
+  * Team upload.
+  * debian/tests:
+    + add python3-distutils to Depends
+  * debian/control:
+    + add python3-distutils to Depends
+
+ -- Daniel Stender <stender@debian.org>  Tue, 27 Mar 2018 17:39:30 +0200
+
+keras (2.1.5-1) unstable; urgency=medium
+
+  * Team upload.
+  [ Stephen Sinclair ]
+  * New upstream version 2.1.5.
+  * patches:
+    + Update mkdocs.yml patch to match new repo_url
+  * debian/rules:
+    + Exclude test_topology.py (requires Tensorflow)
+    + imagenet_utils_test.py was listed twice
+    + test_documentation.py tries to load Tensorflow
+    + convolutional_test.py internal failure
+    + test_callbacks.py tries to load Tensorflow
+    + test_datasets.py moved to tests/integration_tests
+  * debian/control:
+    + build-dep python3-nose, required by test_model_saving.py
+    + build-dep python3-pydot, required by vis_utils_test.py
+    + update Vcs-Git and Vcs-Browser to salsa.
+    + update to Debian standards 4.1.3 (no changes required)
+    + update debhelper to 11
+  * debian/copyright:
+    + Update github URL to keras-team/keras
+    + Update year to 2018
+  * debian/tests:
+    + python3-theano-cpu, input datatype changed to array
+
+ -- Daniel Stender <stender@debian.org>  Mon, 19 Mar 2018 22:33:51 +0100
+
+keras (2.1.1-1) unstable; urgency=medium
+
+  * Team upload.
+  [ Stephen Sinclair ]
+  * New upstream version 2.1.1.
+  * deb/copyright:
+    + extend upstream copyright to 2017.
+    + add paragraph for images in debian/.
+    + add Microsoft as a copyright holder.
+  * deb/watch:
+    + watch pypi.debian.net instead of Github.
+  * Add autopkgtest (checks that module loads, optimizes a simple
+    network).
+  * Add new package keras-doc:
+    + Add keras-doc.docs.
+    + Include docs built by mkdocs.
+    + Patch to add missing images pulled from Keras website.
+    + Patch to build html with locally working links.
+    + Patch to remove Google Analytics.
+    + Add keras-doc.doc-base.
+  * debian/rules:
+    + Run a subset of unit tests that currently pass and don't require
+      external resources.
+    + Add $KERAS_BACKEND=theano to select Theano.
+    + Add $THEANO_FLAGS=device=cpu to make tests run on CPU.
+    + Add $PYTHONDONTWRITEBYTECODE=1 to avoid producing __pycache__.
+    + Add global export for $LC_LANG=C.UTF-8 and $LC_ALL=C.UTF-8.
+    + Removed $LC_LANG from links.
+  * debian/control:
+    + Move source package Section back to science.
+    + Move python3-* packages to Section python.
+    + Add mkdocs to build-deps for docs.
+    + Add python3-pil and python3-pandas to build-deps for tests.
+    + Add Vcs-Git and Vcs-Browser fields.
+
+ -- Daniel Stender <stender@debian.org>  Wed, 27 Dec 2017 16:50:42 +0100
+
+keras (1.0.7-2) unstable; urgency=medium
+
+  * Team upload, upload to unstable.
+  [ Stephen Sinclair ]
+  * Change maintainer to Debian Science, uploader to Stephen Sinclair
+    (Closes: #852133).
+  * Change Section to python.
+  * Add gbp.conf default to using pristine-tar.
+  * Adhere to Debian Policy to version 4.1.1.
+
+ -- Daniel Stender <stender@debian.org>  Wed, 01 Nov 2017 17:30:05 +0100
+
+keras (1.0.7-1) experimental; urgency=medium
+
+  * Initial release (Closes: #818106).
+
+ -- Daniel Stender <stender@debian.org>  Wed, 17 Aug 2016 20:46:02 +0200

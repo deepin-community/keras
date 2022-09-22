@@ -1,0 +1,20 @@
+From: Stephen Sinclair <radarsat1@gmail.com>
+Date: Mon, 20 Nov 2017 08:39:54 -0300
+Subject: Remove Google Analystics reference, privacy policy
+
+---
+ docs/mkdocs.yml | 1 -
+ 1 file changed, 1 deletion(-)
+
+Index: keras/docs/mkdocs.yml
+===================================================================
+--- keras.orig/docs/mkdocs.yml
++++ keras/docs/mkdocs.yml
+@@ -22,7 +22,6 @@ site_description: 'Documentation for Ker
+ use_directory_urls: false
+ 
+ dev_addr: '0.0.0.0:8000'
+-google_analytics: ['UA-61785484-1', 'keras.io']
+ 
+ nav:
+ - Home: index.md

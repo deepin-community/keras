@@ -1,0 +1,8 @@
+0001-Change-external-img-tag-urls-to-local-files.patch
+0002-Make-docs-browsable-by-setting-use_directory_urls-fa.patch
+0003-Remove-Google-Analystics-reference-privacy-policy.patch
+0004-Exclude-docs-from-built-modules.patch
+0005-Change-default-backend-to-theano.patch
+0006-Selu-test-tolerance.patch
+0007-h5py-mode-write.patch
+0008-do-not-use-is-with-literals

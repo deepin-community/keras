@@ -1,0 +1,57 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+export PYBUILD_NAME=keras
+
+export KERAS_BACKEND=theano
+export THEANO_FLAGS=base_compiledir='.pybuild',device=cpu
+export PYTHONDONTWRITEBYTECODE=1
+
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
+# require tensorflow but not SKIPPED
+TESTSTOIGNORE=\
+  tests/keras/utils/multi_gpu_test.py \
+  tests/docs/test_documentation.py \
+  tests/keras/callbacks/callbacks_test.py \
+  tests/keras/metrics_confusion_matrix_test.py
+
+# internal failure, bad function calls
+TESTSTOIGNORE+=\
+  tests/integration_tests/test_image_data_tasks.py \
+  tests/integration_tests/test_temporal_data_tasks.py \
+  tests/keras/backend/backend_test.py
+
+# need to access the internet
+TESTSTOIGNORE+=\
+  tests/integration_tests/imagenet_utils_test.py \
+  tests/integration_tests/test_datasets.py
+
+# related to docs gen not found in build dir
+TESTSTOIGNORE+=\
+  tests/docs/test_doc_auto_generation.py
+
+# requires pyux, not packaged in debian
+TESTSTOIGNORE+=\
+  tests/test_api.py
+
+IGNORETESTS=$(TESTSTOIGNORE:%=--ignore=%)
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_auto_build-indep:
+	dh_auto_build
+
+override_dh_auto_test:
+# Run tests using Theano backend and CPU device.
+# Not every test is expected to pass, so we run a subset here:
+	PYBUILD_SYSTEM=custom PYBUILD_TEST_ARGS="cd {build_dir} && py.test-3 -oaddopts=-v $(IGNORETESTS)" dh_auto_test
+
+override_dh_installdocs:
+	markdown README.md > .pybuild/README.html
+	LANG=C.UTF-8 links -dump .pybuild/README.html > .pybuild/README
+	dh_installdocs -A .pybuild/README
+
+override_dh_compress:
+	dh_compress -X.py

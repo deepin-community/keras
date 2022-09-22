@@ -1,0 +1,41 @@
+From: Stephen Sinclair <radarsat1@gmail.com>
+Date: Wed, 24 Jun 2020 06:08:34 +0000
+Subject: Specify file mode when opening in-memory files.
+
+Fixes a test regression for python3-h5py 2.10.0-8.
+---
+ keras/utils/io_utils.py    | 4 ++--
+ tests/test_model_saving.py | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/keras/utils/io_utils.py b/keras/utils/io_utils.py
+index a94c821..1418e1d 100644
+--- a/keras/utils/io_utils.py
++++ b/keras/utils/io_utils.py
+@@ -413,11 +413,11 @@ def save_to_binary_h5py(save_function, stream):
+         stream: Any file-like object implementing the method `write` that accepts
+             `bytes` data (e.g. `io.BytesIO`).
+      """
+-    with h5py.File('in-memory-h5py', driver='core', backing_store=False) as h5file:
++    with h5py.File('in-memory-h5py', driver='core', backing_store=False, mode='w') as h5file:
+         # note that filename does not matter here.
+         return_value = save_function(h5file)
+         h5file.flush()
+-        binary_data = h5file.fid.get_file_image()
++        binary_data = h5file.id.get_file_image()
+     stream.write(binary_data)
+ 
+     return return_value
+diff --git a/tests/test_model_saving.py b/tests/test_model_saving.py
+index 8650a42..8922c16 100644
+--- a/tests/test_model_saving.py
++++ b/tests/test_model_saving.py
+@@ -157,7 +157,7 @@ def test_model_saving_to_pre_created_h5py_file():
+ 
+     # test non-default options in h5
+     with h5py.File('does not matter', driver='core',
+-                   backing_store=False) as h5file:
++                   backing_store=False, mode='w') as h5file:
+         save_model(model, h5file)
+         loaded_model = load_model(h5file)
+         out2 = loaded_model.predict(x)

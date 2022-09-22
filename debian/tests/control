@@ -1,0 +1,4 @@
+Tests: python3-theano-cpu python3-default
+Depends: python3-keras, python3-pytest, python3-distutils
+Restrictions: allow-stderr
+# Add allow-stderr restriction because impossible to suppress backend announcement ("Using Theano backend.") on stderr
